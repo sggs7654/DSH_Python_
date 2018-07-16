@@ -18,7 +18,7 @@ class Point:
 
 
 class PointSet:
-    seed = 2
+    seed = 1
     point_num = 40
     point_set = []
     center_num = 4
@@ -26,6 +26,10 @@ class PointSet:
     radius = 10
     min_coordinate = 0
     max_coordinate = 150
+
+    def __init__(self):
+        self.build_center()
+        self.build_points()
 
     def reset_seed(self):
         self.seed = self.seed + 11
@@ -55,23 +59,23 @@ class PointSet:
     def build_points(self):
         cluster_size = int(self.point_num / self.center_num)
         generate_count = 0
-        for center_point in self.center_set:
-            for i in range(0, cluster_size):
-                if generate_count >= self.point_num:
-                    return
-                cx = center_point.x
-                cy = center_point.y
-                self.reset_seed()
-                x = np.random.uniform(low=cx-self.radius, high=cx+self.radius)
-                self.reset_seed()
-                y = np.random.uniform(low=cy-self.radius, high=cy+self.radius)
-                new_point = Point(x, y)
-                self.point_set.append(new_point)
-                generate_count = generate_count + 1
 
-    def build(self):
-        self.build_center()
-        self.build_points()
+        while True:
+            if generate_count >= self.point_num:
+                return
+            # 随机选择一个中心点, 作为center_point
+            self.reset_seed()
+            center_index = np.random.randint(low=0,high=self.center_num)
+            center_point = self.center_set[center_index]
+            cx = center_point.x
+            cy = center_point.y
+            self.reset_seed()
+            x = np.random.uniform(low=cx-self.radius, high=cx+self.radius)
+            self.reset_seed()
+            y = np.random.uniform(low=cy-self.radius, high=cy+self.radius)
+            new_point = Point(x, y)
+            self.point_set.append(new_point)
+            generate_count = generate_count + 1
 
     def get_matrix(self):
         x = []
@@ -100,8 +104,3 @@ class PointSet:
         plt.scatter(x, y, label='scatter')
         plt.legend()
         plt.show()
-
-
-# pointSet = PointSet()
-# pointSet.build()
-# pointSet.show()
