@@ -19,11 +19,11 @@ class Point:
 
 class PointSet:
     seed = 1
-    point_num = 40
+    point_num = 80
     point_set = []
-    center_num = 4
+    center_num = 5
     center_set = []
-    radius = 10
+    radius = 20
     min_coordinate = 0
     max_coordinate = 150
 
@@ -36,7 +36,7 @@ class PointSet:
         np.random.seed(self.seed)
 
     def build_center(self):
-        for i in range(0, self.center_num):
+        for i in range(self.center_num):
             while True:  # 产生目标区域内的坐标点
                 self.reset_seed()
                 x = np.random.randint(low=self.min_coordinate + self.radius,
@@ -49,7 +49,7 @@ class PointSet:
                     break
                 # 对于后续的中心点,则需要检测它们是否与其他已有的中心点发生碰撞
                 collision = False
-                for j in range(0, len(self.center_set)):
+                for j in range(len(self.center_set)):
                     if center_point.dist(self.center_set[j]) < 2 * self.radius:  # 碰撞定义:半径重叠
                         collision = True
                 if not collision:
@@ -57,22 +57,22 @@ class PointSet:
             self.center_set.append(center_point)
 
     def build_points(self):
-        cluster_size = int(self.point_num / self.center_num)
         generate_count = 0
-
         while True:
             if generate_count >= self.point_num:
                 return
             # 随机选择一个中心点, 作为center_point
             self.reset_seed()
-            center_index = np.random.randint(low=0,high=self.center_num)
+            center_index = np.random.randint(low=0, high=self.center_num)
             center_point = self.center_set[center_index]
             cx = center_point.x
             cy = center_point.y
             self.reset_seed()
-            x = np.random.uniform(low=cx-self.radius, high=cx+self.radius)
+            x = np.random.normal(loc=cx, scale=self.radius)
+            # x = np.random.uniform(low=cx-self.radius, high=cx+self.radius)
             self.reset_seed()
-            y = np.random.uniform(low=cy-self.radius, high=cy+self.radius)
+            y = np.random.normal(loc=cy, scale=self.radius)
+            # y = np.random.uniform(low=cy-self.radius, high=cy+self.radius)
             new_point = Point(x, y)
             self.point_set.append(new_point)
             generate_count = generate_count + 1
@@ -80,7 +80,7 @@ class PointSet:
     def get_matrix(self):
         x = []
         y = []
-        for i in range(0, self.point_num):
+        for i in range(self.point_num):
             x.append(self.point_set[i].x)
             y.append(self.point_set[i].y)
         # plt.scatter(x, y)

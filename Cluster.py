@@ -17,20 +17,20 @@ class Cluster:
 
     def show(self):
         clusters = []
-        for i in range(0, self.point_set.center_num):
+        for i in range(self.point_set.center_num):
             clusters.append([])
-        for i in range(0, self.point_set.point_num):
+        for i in range(self.point_set.point_num):
             clusters[self.labels[i]].append(self.point_set.point_set[i])
         x = []
         y = []
-        for i in range(0, self.point_set.center_num):
+        for i in range(self.point_set.center_num):
             for j in clusters[i]:
                 x.append(j.x)
                 y.append(j.y)
             plt.scatter(x, y, label='Cluster ' + str(i))
             x.clear()
             y.clear()
-        for i in range(0, self.point_set.center_num):
+        for i in range(self.point_set.center_num):
             x.append(self.centroids[i, 0])
             y.append(self.centroids[i, 1])
             # plt.scatter(self.centroids[i, 0], self.centroids[i, 1], label='Centroids' + str(i))
