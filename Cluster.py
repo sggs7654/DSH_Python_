@@ -3,6 +3,7 @@ from sklearn.cluster import KMeans
 
 
 class Cluster:
+    k = 10  # kmeans聚类中的质心数目
     point_set = None
     centroids = None
     labels = None
@@ -10,14 +11,14 @@ class Cluster:
     def __init__(self, point_set):
         self.point_set = point_set
         data = self.point_set.get_matrix()
-        estimator = KMeans(n_clusters=self.point_set.center_num, max_iter=5)  # 初始化聚类器
+        estimator = KMeans(n_clusters=self.k, max_iter=5)  # 初始化聚类器
         estimator.fit(data)  # 拟合模型
         self.labels = estimator.labels_  # 获取聚类标签
         self.centroids = estimator.cluster_centers_  # 获取聚类中心
 
     def show(self):
         clusters = []
-        for i in range(self.point_set.center_num):
+        for i in range(self.k):
             clusters.append([])
         for i in range(self.point_set.point_num):
             clusters[self.labels[i]].append(self.point_set.point_set[i])

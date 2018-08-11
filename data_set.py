@@ -20,7 +20,7 @@ class Point:
 class PointSet:
     seed = 1
     point_num = 80
-    point_set = []
+    point_set = []  # 一个元素为Point的列表, 容量为point_num
     center_num = 5
     center_set = []
     radius = 20
@@ -102,5 +102,24 @@ class PointSet:
             x.append(i.x)
             y.append(i.y)
         plt.scatter(x, y, label='scatter')
+        plt.legend()
+        plt.show()
+
+    def show2(self):  # 这段代码展示了如何在plt散点图中画出线段
+        x = []
+        y = []
+        for i in self.center_set:
+            x.append(i.x)
+            y.append(i.y)
+        plt.scatter(x, y, label='center')
+        x.clear()
+        y.clear()
+        for i in self.point_set:
+            x.append(i.x)
+            y.append(i.y)
+        plt.scatter(x, y, label='scatter')
+        plt.plot([0,100], [0,100], alpha=0.2)
+        plt.plot([0,100], [100,0], alpha=0.2)
+        plt.plot([],[],color='#FF0000', label='a line')
         plt.legend()
         plt.show()
